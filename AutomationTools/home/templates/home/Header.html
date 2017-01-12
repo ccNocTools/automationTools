@@ -1,0 +1,34 @@
+
+<h3>
+    [<a href="/">Home</a>]
+    [<span id="tools_menu">Tools</span>]
+    {% if is_admin == "True" %}
+    [<a href="{% url 'admintools:home' %}">Admin Tools</a>]
+    {% endif %}
+    [<a href="{% url 'home:logout' %}">Logout</a>]
+
+
+    <script>
+        var tools_menu = document.querySelector("#tools_menu");
+        var menu_options = document.createElement("ul");
+        menu_options.style.position = "absolute";
+        menu_options.style.backgroundColor = "skyblue";
+        menu_options.style.borderLeft = "3px solid black";
+        menu_options.style.listStyleType = "none";
+        var option_1 = document.createElement("li");
+        option_1.innerHTML = "<a href = '{% url "tools:get_os" %}'>Get OS via SNMP</a>";
+        menu_options.appendChild(option_1);
+        menu_options.style.visibility = "hidden";
+
+        tools_menu.appendChild(menu_options);
+        tools_menu.addEventListener("click", function(){
+            if (menu_options.style.visibility == "visible"){
+                menu_options.style.visibility = "hidden";
+            }
+            else{
+                menu_options.style.visibility = "visible";
+            }
+        }, false);
+
+    </script>
+</h3>

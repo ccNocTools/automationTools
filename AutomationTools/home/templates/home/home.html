@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body onload="page_load()">
+{% include "home/Header.html" %}
+
+<p>Home Page</p>
+
+    <script>
+        function page_load() {
+            if ("{{message}}" != ""){
+            alert("{{message}}");
+            }
+        }
+    </script>
+</body>
+</html>

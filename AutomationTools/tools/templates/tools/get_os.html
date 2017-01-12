@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get IP via SNMP</title>
+</head>
+<body onload="page_load()">
+    {% include "home/Header.html" %}
+
+    <form action="{% url 'tools:find_os' %}" method="post">
+        {% csrf_token %}
+        <label for="ip_address">IP Address:</label>
+        <input id="ip_address" type="text" name="ip_address" value="{{ip_address}}"/><br>
+        <label for="community_string">Community String:</label>
+        <input id="community_string" type="text" name="community_string" value="{{community_string}}"/><br>
+        <input type="submit" value="Submit"/>
+    </form>
+    <br><br>OS: {{os}}
+    <script>
+        function page_load() {
+            if ("{{message}}" != ""){
+            alert("{{message}}");
+            }
+        }
+        history.pushState({}, null, '/tools/get_os/');
+    </script>
+</body>
+</html>
