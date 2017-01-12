@@ -116,6 +116,6 @@ def register(request):
     if not user['result']:
         context['message'] = user['message']
         return render(request, "home/register.html", context)
-    context['message'] = "User registered successfully."
+    context['message'] = "User registered successfully. Login to continue."
 
-    return render(request, "home/home.html", context)
+    return render(request, "home/login.html", context)
