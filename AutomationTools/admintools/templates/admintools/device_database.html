@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Device Database</title>
+</head>
+<body onload="page_load()">
+    {% include "home/Header.html" %}
+
+    <form action="{% url 'admintools:device_database' %}" method="post" id="devices_form">
+        {% csrf_token %}
+
+    <table>
+        <tr class="row" id="title_row">
+            <th class="invisible"></th><th>&nbsp;Device Name&nbsp;</th><th>&nbsp;IP Address&nbsp;</th>
+            <th>&nbsp;Device Type&nbsp;</th><th>&nbsp;OS Version&nbsp;</th><th class="invisible"></th></tr>
+    {% for device in device_list %}
+        <tr class="row">
+            <td>&nbsp;
+                <input type="checkbox" align="center" id="{{device.ip_address}}_box" class="check_box"
+                       name="{{device.ip_address}}_box">&nbsp;
+            </td>
+            <td>
+                <label for="{{device.ip_address}}_name_box" id="{{device.ip_address}}_name_box">{{device.device_name}}
+                    </label>
+                <input type="hidden" size="12" id="{{device.ip_address}}_input_box"
+                       name="{{device.ip_address}}_name_box" onKeyUp="submit_if_enter()"/>
+
+            </td>
+            <td>{{device.ip_address}}</td>
+            <td>
+
+            </td>
+            <td>
+                {{device.os_version}}
+            </td>
+            <td>
+                <input type="button" class=".edit_button" name="{{device.ip_address}}" id="{{device.device_name}}"
+                       value="&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;" />
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+
+    <input type="submit" name="action" onclick="return confirm('Are you sure?')"
+        id="delete_devices_button" class="invisible" value="Delete Devices"/>
+
+    </form><br>
+
+    <button id="add_device_button">Add Device</button><br>
+
+        <form action="{% url 'admintools:device_database' %}" method="post" id="add_device_form" class="invisible">
+        {% csrf_token %}
+            <label><b>Add User</b></label><br>
+        <label for="device_name">Device Name:</label>
+        <input type="text" id="device_name" name="device_name"/><br>
+        <label for="ip_address">IP Address:</label>
+        <input type="text" id="ip_address" name="ip_address"/><br>
+        <input type="submit" value="Submit"/>
+    </form><br>
+
+    <script>
+        add_device_form = document.querySelector("#add_device_form");
+        add_device_button = document.querySelector("#add_device_button");
+        delete_devices_button = document.querySelector("#delete_devices_button");
+
+        check_boxes = document.querySelectorAll(".check_box");
+
+        for (i = 0; i < check_boxes.length; ++i){
+            check_boxes[i].addEventListener("click", function(){
+                for (i = 0; i < check_boxes.length; ++i){
+                    if (check_boxes[i].checked){
+                    delete_devices_button.classList.remove("invisible");
+                    return;
+                    }
+                }
+                delete_devices_button.classList.add("invisible");
+            }, false);
+        }
+
+        edit_buttons = document.querySelectorAll("input[class='.edit_button']");
+
+        for(i = 0; i < edit_buttons.length; ++i){
+
+            edit_buttons[i].addEventListener("click", function(){
+
+                for(i = 0; i < check_boxes.length; ++i){
+                    check_boxes[i].checked = false;
+                    delete_devices_button.classList.add("invisible");
+                }
+                label_id = this.name + "_name_box";
+                all_labels = document.querySelectorAll('label');
+                for(j = 0; j < all_labels.length; ++j){
+                    if (all_labels[j].id == label_id){
+                        name_box_label = all_labels[j];
+                    }
+                }
+
+                all_inputs = document.querySelectorAll('input');
+                input_id = this.name + "_input_box";
+                for(j = 0; j < all_inputs.length; ++j){
+                    if (all_inputs[j].id == input_id){
+                        name_input_box = all_inputs[j];
+                        break;
+                    }
+                }
+
+                if (this.value == 'Submit'){
+                    if (this.id == name_input_box.value){
+                        name_box_label.style.display = 'block';
+                        name_input_box.type = 'hidden';
+                        this.value = '   Edit  ';
+                    }
+                    else{
+                        devices_form = document.querySelector('#devices_form');
+                        confirmed = confirm("Are you sure?");
+                        if (confirmed)
+                            devices_form.submit();
+                        else{
+                            name_box_label.style.display = 'block';
+                            name_input_box.type = 'hidden';
+                            this.value = '   Edit  ';
+                        }
+                    }
+                }
+                else{
+                name_box_label.style.display = 'none';
+                name_input_box.type = 'text';
+                name_input_box.value = this.id;
+                name_input_box.style.width = "100%";
+                this.value = 'Submit';
+                }
+            }, false);
+        }
+
+        function page_load() {
+            if ("{{message}}" != ""){
+            alert("{{message}}");
+            }
+        }
+
+        history.pushState({}, null, '/admintools/device_database');
+
+        add_device_button.addEventListener("click", function(){
+            if (add_device_button.innerHTML == "Add Device"){
+                add_device_form.classList.remove("invisible");
+                add_device_button.innerHTML = "Hide";
+                }
+            else{
+                add_device_form.classList.add("invisible");
+                add_device_button.innerHTML = "Add Device";
+            }
+        }, false);
+
+
+    </script>
+</body>
+</html>

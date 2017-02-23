@@ -9,22 +9,29 @@ import sys
     for testing purposes we are printing results.
 """
 
+
 def findOS(community_string, hostname):
 
-    get = getCmd(SnmpEngine(),
-                 CommunityData(community_string),
-                 UdpTransportTarget((hostname, 161)),
-                 ContextData(),
-                 ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0)))
+    try:
+        get = getCmd(SnmpEngine(),
+                     CommunityData(community_string),
+                     UdpTransportTarget((hostname, 161)),
+                     ContextData(),
+                     ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0)))
+        target = str(next(get))
+        hex_value = re.search('(?<= hexValue=\')[A-Fa-f0-9]*', target)
+        try:
+            ascii_value = bytearray.fromhex(hex_value.group()).decode()
+            os = ascii_value[:9]
+            os_version = re.search('(?<= Version\s).*,', ascii_value).group(0).replace(',', '')
+            return (os + " " + os_version)
+        except:
+            return ("No OS found")
+    except:
+        return ("Unable to connect")
 
-    target = str(next(get))
-    hexvalue = re.search('(?<= hexValue=\')..................', target)
-    os = re.search('(?<=Cisco\s).....', target)
-
-    if hexvalue:
-        return(bytearray.fromhex(hexvalue.group()).decode())
-    elif os:
-        return(os.group())
-    else:
-        return("no os found")
-
+"""
+findOS("CCsolarRo", "2.1.1.1")
+findOS("CCsolarRo", "10.0.0.1")
+findOS("CCsolarRo", "10.0.5.6")
+"""

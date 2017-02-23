@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>    {% load staticfiles %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,16 +13,29 @@
         <input id="ip_address" type="text" name="ip_address" value="{{ip_address}}"/><br>
         <label for="community_string">Community String:</label>
         <input id="community_string" type="text" name="community_string" value="{{community_string}}"/><br>
-        <input type="submit" value="Submit"/>
-    </form>
-    <br><br>OS: {{os}}
+        <input type="submit" value="Submit" onclick="show_working_indicator()"/><br>
+    </form><br>
+    <b>OS: </b><span id="os">{{os}}<img src = "{% static '01-progress.gif' %}" id = "working_indicator" width="10%"></span>
     <script>
+        working_indicator = document.querySelector("#working_indicator");
         function page_load() {
             if ("{{message}}" != ""){
             alert("{{message}}");
             }
+            working_indicator.style.visibility = "hidden";
+
         }
         history.pushState({}, null, '/tools/get_os/');
+
+
+        show_working_indicator = function(){
+            working_indicator.style.width = "10%";
+            os = document.querySelector("#os");
+            os.innerHTML = "";
+            working_indicator.style.visibility = "visible";
+            os.appendChild(working_indicator);
+
+        }
     </script>
 </body>
 </html>

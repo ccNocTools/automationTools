@@ -1,23 +1,26 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from home.usermod import User_Mod
+from tools.models import Community_String, Device_Database
+from tools.getIPviaSNMP import findOS
 
 
-def index(request):
+"""View for main users page. If user is not admin, will redirect to home."""
+
+
+def users(request):
     if not request.user.is_superuser:
         return redirect("/")
-    all_users = User.objects.all();
+    all_users = User.objects.order_by('username')
+
     context = {
         'all_users': all_users
     }
+    return render(request, 'admintools/users.html', context)
 
-    return render(request, 'admintools/index.html', context)
 
-
-def add_user(request):
-    if not request.user.is_superuser:
-        return redirect("/")
-    return render(request, "admintools/adduser.html")
+"""View for new user form on users page. Uses User_Mod class to create new user and checks 'is_admin' checkbox from
+form. Initial password is the same as username. If user is not admin, will redirect to home."""
 
 
 def new_user(request):
@@ -31,18 +34,24 @@ def new_user(request):
 
     user = User_Mod.create_user(username, is_admin)
     context = {
-        'all_users': User.objects.all(),
+        'all_users': User.objects.order_by('username'),
         'message': user['message']
     }
 
-    return render(request, "admintools/index.html", context)
+    return render(request, "admintools/users.html", context)
+
+
+"""View for modify user form on users page. First, a list of all user objects is created (all_users). Then the list is
+scanned through and a new list (user_list) is created for all the users who were selected on the form. Then if the
+new list is not empty the desired action is checked and executed using the User_Mod class.
+If user is not admin, will redirect to home."""
 
 
 def modify_user(request):
     if not request.user.is_superuser:
         return redirect("/")
 
-    all_users = User.objects.all()
+    all_users = User.objects.order_by('username')
     user_list = []
     context = {
         'all_users': all_users,
@@ -52,11 +61,7 @@ def modify_user(request):
         username = user.username
         try:
             if bool(request.POST[username]):
-                if username == request.user.username:
-                    context['message'] = "Cannot modify currently logged in user."
-                    return render(request, 'admintools/index.html', context)
-                else:
-                    user_list.append(username)
+                user_list.append(username)
         except:
             pass
 
@@ -67,10 +72,109 @@ def modify_user(request):
             result = User_Mod.disable_user(user_list)
         elif request.POST['action'] == "Enable Users":
             result = User_Mod.enable_user(user_list)
-
-        context['all_users'] = User.objects.all();
+        elif request.POST['action'] == "Reset Users":
+            result = User_Mod.reset_user(user_list)
+        context['all_users'] = User.objects.order_by('username')
         context['message'] = result['message']
     else:
         context['message'] = "Please choose user(s) to modify."
 
-    return render(request, 'admintools/index.html', context)
+    return render(request, 'admintools/users.html', context)
+
+
+"""View to see and change the community string. If the community string exists, the HTTP render will include that info.
+If not, it will send "No community string found." Then it checks to see if a new value for the community string has
+been put in by the user. If so, the new community string is changed and a confirmation message is included.
+If user is not admin, will redirect to home."""
+
+
+def community_string(request):
+    if not request.user.is_superuser:
+        return redirect("/")
+
+    context = {
+        "community_string": "",
+        "message": ""
+    }
+    try:
+        com_str = Community_String.objects.get().community_string
+    except:
+        com_str = "No community string found."
+
+    try:
+        new_com_str = request.POST['community_string']
+        try:
+            u = Community_String.objects.get()
+        except:
+            u = Community_String.objects.create()
+        u.community_string = new_com_str
+        u.save()
+        com_str = new_com_str
+        context['message'] = "Community string changed successfully."
+    except:
+        pass
+
+    context['community_string'] = com_str
+    return render(request, "admintools/community_string.html", context)
+
+
+"""View to display and modify the device database. First it check to see if a new device is being added. If so, it takes
+the required information from the form and creates a new Device_Database object.
+Then it checks to see if any device checkbox is selected for modification or deletion. A list of all devices is
+created (device_list). Then the list is scanned through twice, first to check if an existing device is being modified,
+and again to check if any devices are being deleted. The desired action is then performed. Finally, a new device_list
+is created to send to the rendered page to be displayed in the table. If user is not admin, will redirect to home."""
+
+
+def device_database(request):
+    if not request.user.is_superuser:
+        return redirect("/")
+
+    context = {
+        'device_list': "",
+        'message': ""
+    }
+    device_list = Device_Database.objects.all()
+
+    try:
+        com_str = Community_String.objects.get().community_string
+        device_name = request.POST["device_name"]
+        ip_address = request.POST["ip_address"]
+        os_version = findOS(com_str, request.POST["ip_address"])
+
+        for device in device_list:
+            if ip_address == device.ip_address:
+                context['message'] = "Device already exists."
+                context['device_list'] = device_list
+                return render(request, "admintools/device_database.html", context)
+
+        new_device = Device_Database.objects.create()
+        new_device.device_name = device_name
+        new_device.ip_address = ip_address
+        new_device.os_version = os_version
+        new_device.save()
+        context['message'] = "Device added successfully."
+    except:
+        pass
+    try:
+        for device in device_list:
+            new_device_name = request.POST[device.ip_address + '_name_box']
+            if new_device_name != '':
+                edited_device = Device_Database.objects.get(ip_address=device.ip_address)
+                edited_device.device_name = new_device_name
+                edited_device.save()
+                context['message'] = "Settings changed successfully."
+    except:
+        pass
+
+    for device in device_list:
+        try:
+            if bool(request.POST[device.ip_address+"_box"]):
+                Device_Database.objects.get(ip_address=device.ip_address).delete()
+            context['message'] = "Devices deleted successfully."
+        except:
+            pass
+    device_list = Device_Database.objects.all()
+    context['device_list'] = device_list
+
+    return render(request, "admintools/device_database.html", context)

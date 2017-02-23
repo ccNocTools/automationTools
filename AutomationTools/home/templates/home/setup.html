@@ -10,23 +10,60 @@
     <form action="{% url 'home:initialize' %}" method="post">
         {% csrf_token %}
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="{{username}}"/><br>
+        <input type="text" id="username" name="username" value="{{username}}" onKeyUp="check_values()"/><br>
         <label for="email_address">Email Address:</label>
-        <input type="text" id="email_address" name="email_address" value="{{email_address}}"/><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password"/><br>
-        <label for="confirm_password">Confirm Password:</label>
-        <input type="password" id="confirm_password" name="confirm_password"/><br>
-        <input type="hidden" id="is_admin" name="is_admin" value="True"/>
-        <input type="submit" value="Submit"/>
+        <input type="email" id="email_address" name="email_address" onKeyUp="check_values()"/><br>
+        <label for="password">New Password:</label>
+        <input type="password" id="password" name="password" onKeyUp="check_values()"/><br>
+        <label for="confirm_password">Confirm New Password:</label>
+        <input type="password" id="confirm_password" name="confirm_password" onKeyUp="check_values()"/>
+        <span id="password_test">Password must be 8 characters or longer.</span><br>
+        <label for="community_string">Community String (optional):</label>
+        <input type="text" id="community_string" name="community_string"/><br>
+        <input type="submit" id="submit" disabled=true value="Register"/>
     </form>
 
+
     <script>
+
+        var username = document.querySelector("#username");
+        var email = document.querySelector("#email_address");
+        var password_test = document.querySelector("#password_test");
+        var password = document.querySelector("#password");
+        var confirm_password = document.querySelector("#confirm_password");
+        var submit_button = document.querySelector("#submit");
+
+        function check_values(){
+            if (password.value != confirm_password.value){
+                password_test.innerHTML = "Passwords do not match.";
+                submit_button.disabled = true;
+            }
+            else{
+                if (password.value.length < 8){
+                    password_test.innerHTML = "Password must be 8 characters or longer.";
+                    submit_button.disabled = true;
+                }
+                else{
+                    password_test.innerHTML = "✔";
+                    if (email.value == "" || username.value == ""){
+                        submit_button.disabled = true;
+                    }
+                    else{
+                        submit_button.disabled = false;
+                    }
+                }
+            }
+
+
+
+        }
+
         function page_load() {
-            if ("{{error}}" != ""){
-            alert("{{error}}");
+            if ("{{message}}" != ""){
+            alert("{{message}}");
             }
         }
+
     </script>
 
 </body>

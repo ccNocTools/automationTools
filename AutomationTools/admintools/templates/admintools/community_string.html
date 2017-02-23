@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Change Community String</title>
+</head>
+<body onload="page_load()">
+    {% include "home/Header.html" %}
+
+    <h3>Change Community String</h3>
+    Current Community String: {{community_string}}<br><br>
+
+    <form action="{% url 'admintools:community_string' %}" method="POST">
+        {% csrf_token %}
+        <label for="community_string">Community String:</label>
+        <input type="text" id="community_string" name="community_string">
+        <input type="submit" value="Submit" onclick="return confirm('Are you you want to modify the community string?')">
+
+
+
+    </form>
+
+
+
+
+    <script>
+        function page_load() {
+            if ("{{message}}" != ""){
+            alert("{{message}}");
+            }
+        }
+    </script>
+</body>
+</html>

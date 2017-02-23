@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '_os1_5dp*yyu*ba2e(15$4begx!mci@9wuj8_042#l+1p-wvyl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'home',
     'tools',
     'admintools',
+    'sslserver',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -65,7 +66,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'custom_context_processor.context_processors.is_admin_processor'
+                'custom_context_processor.context_processors.is_admin_processor',
+                'custom_context_processor.context_processors.device_database_processor'
             ],
         },
     },

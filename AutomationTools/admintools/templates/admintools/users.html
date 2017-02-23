@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Tools</title>
+</head>
+<body onload="page_load()">
+    {% include "home/Header.html" %}
+    <form action="{% url 'admintools:modify_user' %}" method="post"><br>
+    {% csrf_token %}
+    <table border="2px solid black">
+        <tr class="row" id="title_row"><th class="invisible"></th><th>&nbsp;Username&nbsp;</th>
+            <th>&nbsp;Email Address&nbsp;</th><th>&nbsp;Active&nbsp;</th><th>&nbsp;Registered&nbsp;</th>
+            <th>&nbsp;User Type&nbsp;</th></tr>
+    {% for user in all_users %}
+        {% if user.username == request.user.username %}
+        <tr class="row" style="color:green;"><td></td><td>{{user.username}}</td><td>{{user.email}}</td>
+            <td align="center">✔</td><td align="center">✔</td><td>Admin</td></tr>
+        {% endif %}
+    {% endfor %}
+    {% for user in all_users %}
+        {% if user.username != request.user.username %}
+        <tr class="row"{% if user.is_active == False %}
+                style="color:red;"
+            {% endif %}
+            {% if user.email == '' %}
+                style="color:slategrey;"
+            {% endif %}
+            >
+            <td align="center">&nbsp;
+            <input type="checkbox" class="check_box" id="{{user.username}}" name="{{user.username}}">&nbsp;
+            </td>
+            <td>{{user.username}}</td>
+            <td>{{user.email}}</td>
+            <td align="center">
+                {% if user.is_active == True %}
+                ✔
+                {% endif %}
+            </td>
+            <td align="center">
+                {% if user.email != "" %}
+                ✔
+                {% endif %}
+            </td>
+            <td>
+            {% if user.is_superuser == True %}
+                Admin
+            {% else %}
+                Standard
+            {% endif %}
+            </td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+    </table><span id="user_options">
+    <input type="submit" name = "action" onclick="return confirm('Are you you want to delete selected users?')"
+           value="Delete Users"/>
+    <input type="submit" name = "action" onclick="return confirm('Are you sure you want to disable selected users?')"
+           value="Disable Users"/>
+    <input type="submit" name = "action" onclick="return confirm('Are you sure you want to enable selected users?')"
+           value="Enable Users"/>
+    <input type="submit" name = "action" onclick="return confirm('Are you sure you want to reset selected users?')"
+           value="Reset Users"/>
+    </span>
+</form><br>
+
+    <button id="add_user_button">Add User</button><br>
+
+        <form action="{% url 'admintools:new_user' %}" method="post" id="add_user_form">
+        {% csrf_token %}
+            <label><b>Add User</b></label><br>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"/><br>
+        <input type="checkbox" id="is_admin" name="is_admin"/>
+        <label for="is_admin">Administrator</label><br>
+        <input type="submit" value="Submit"/>
+    </form><br>
+
+    <script>
+        add_user_form = document.querySelector("#add_user_form");
+        add_user_button = document.querySelector("#add_user_button");
+        user_options = document.querySelector("#user_options");
+        check_boxes = document.querySelectorAll(".check_box");
+
+        for (i = 0; i < check_boxes.length; ++i){
+            check_boxes[i].addEventListener("click", function(){
+                for (i = 0; i < check_boxes.length; ++i){
+                    if (check_boxes[i].checked){
+                    user_options.classList.remove("invisible");
+                    return;
+                    }
+                }
+                user_options.classList.add("invisible");
+            }, false);
+        }
+
+        function page_load() {
+            add_user_form.classList.add("invisible");
+            user_options.classList.add("invisible");
+            if ("{{message}}" != ""){
+            alert("{{message}}");
+            }
+        }
+        history.pushState({}, null, '/admintools/users');
+
+        add_user_button.addEventListener("click", function(){
+            if (this.innerHTML == 'Add User'){
+                add_user_form.classList.remove("invisible");
+                this.innerHTML = "Hide";
+                }
+            else{
+                add_user_form.classList.add("invisible");
+                this.innerHTML = "Add User";
+            }
+
+        }, false);
+    </script>
+</body>
+</html>

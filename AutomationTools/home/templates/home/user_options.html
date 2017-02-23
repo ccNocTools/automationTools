@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body onload="page_load()">
+{% include "home/Header.html" %}
+
+
+    <button id="change_password_button">Change Password</button><br>
+
+        <form action="{% url 'home:user_options' %}" method="post" id="change_password_form">
+        {% csrf_token %}
+            <label><b>Change Password</b></label><br>
+        <input type="hidden" id="user_name" name="user_name" value="{{request.user.username}}"/>
+        <label for="old_password">Old Password:</label>
+        <input type="password" id="old_password" name="old_password"/><br>
+        <label for="new_password">New Password:</label>
+        <input type="password" id="new_password" name="new_password" onKeyUp="check_password()"/><br>
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" id="confirm_password" name="confirm_password" onKeyUp="check_password()"/>
+        <span id="password_test">Password must be 8 characters or longer.</span><br>
+        <input type="submit" value="Submit" disabled=true id="change_password_submit_button"/>
+    </form><br>
+
+
+    <script>
+
+        change_password_form = document.querySelector("#change_password_form");
+        change_password_button = document.querySelector("#change_password_button");
+        new_password = document.querySelector("#new_password");
+        confirm_password = document.querySelector("#confirm_password");
+        password_test = document.querySelector("#password_test");
+        change_password_submit_button = document.querySelector("#change_password_submit_button");
+
+        change_password_button.addEventListener("click", function(){
+            if (this.innerHTML == "Change Password"){
+                this.innerHTML = "Hide";
+                change_password_form.classList.remove("invisible");
+            }
+            else{
+                this.innerHTML = "Change Password";
+                change_password_form.classList.add("invisible");
+            }
+
+        }, false);
+
+        function check_password(){
+            if (new_password.value != confirm_password.value){
+                password_test.innerHTML = "Passwords do not match.";
+                change_password_submit_button.disabled = true;
+            }
+            else{
+                if (new_password.value.length < 8){
+                    password_test.innerHTML = "Password must be 8 characters or longer.";
+                    change_password_submit_button.disabled = true;
+                }
+                else{
+                    password_test.innerHTML = "✔";
+                    change_password_submit_button.disabled = false;
+                }
+            }
+        }
+
+        function page_load() {
+            change_password_form.classList.add("invisible");
+            if ("{{message}}" != ""){
+            alert("{{message}}");
+            }
+        }
+    </script>
+</body>
+</html>

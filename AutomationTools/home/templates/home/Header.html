@@ -1,34 +1,105 @@
+    {% load staticfiles %}
 
-<h3>
-    [<a href="/">Home</a>]
-    [<span id="tools_menu">Tools</span>]
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type = "text/css"/>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css"/>
+	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
+    <h2><a onclick="return show_main_menu()">☰ Menu</a>
+<div id="header_bar">
+    <a href="/"><button class="header_button">Home</button></a>
+    <a><button class="header_button" onmouseover="show_tools_menu()" onmouseout="hide_tools_menu()">
+        <span id="tools_menu">Tools</span></button></a>
     {% if is_admin == "True" %}
-    [<a href="{% url 'admintools:home' %}">Admin Tools</a>]
+    <a><button class="header_button" onmouseover="show_admin_tools_menu()" onmouseout="hide_admin_tools_menu()">
+        <span id="admin_tools_menu" >Admin Tools</span></button></a>
     {% endif %}
-    [<a href="{% url 'home:logout' %}">Logout</a>]
-
-
+    <a href="/user_options"><button class="header_button">User Options</button></a>
+    <a href="{% url 'home:logout' %}"><button class="header_button">Logout</button></a>
+</div></h2>
     <script>
         var tools_menu = document.querySelector("#tools_menu");
-        var menu_options = document.createElement("ul");
-        menu_options.style.position = "absolute";
-        menu_options.style.backgroundColor = "skyblue";
-        menu_options.style.borderLeft = "3px solid black";
-        menu_options.style.listStyleType = "none";
-        var option_1 = document.createElement("li");
-        option_1.innerHTML = "<a href = '{% url "tools:get_os" %}'>Get OS via SNMP</a>";
-        menu_options.appendChild(option_1);
-        menu_options.style.visibility = "hidden";
+        var tools_menu_options = document.createElement("span");
+        main_menu = document.querySelector("#header_bar");
 
-        tools_menu.appendChild(menu_options);
-        tools_menu.addEventListener("click", function(){
-            if (menu_options.style.visibility == "visible"){
-                menu_options.style.visibility = "hidden";
+        var tools_option_1 = document.createElement("div");
+        get_os_button = document.createElement("button");
+        get_os_button.classList.add("submenu_button");
+        get_os_button.innerHTML = "<a href = '{% url "tools:get_os" %}'>&nbsp;Get OS&nbsp;</a>";
+        tools_option_1.appendChild(get_os_button);
+        tools_menu_options.appendChild(tools_option_1);
+        tools_menu_options.style.visibility = "hidden";
+        tools_menu_options.classList.add("tools_menu");
+        tools_menu.appendChild(tools_menu_options);
+
+        hide_tools_menu=function(){
+            tools_menu_options.style.visibility = "hidden";
+        }
+        show_tools_menu=function(){
+            tools_menu_options.style.visibility = "visible";
+        }
+
+        var admin_tools_menu = document.querySelector("#admin_tools_menu");
+        var admin_tools_menu_options = document.createElement("span");
+        admin_tools_menu_options.classList.add("tools_menu");
+
+        var admin_tools_option_1 = document.createElement("div");
+        users_button = document.createElement("button");
+        users_button.classList.add("submenu_button");
+        users_button.innerHTML="<a href='{% url "admintools:users" %}'>Users</a>";
+        admin_tools_option_1.appendChild(users_button);
+        admin_tools_option_1.style.textAlign = "left";
+        admin_tools_menu_options.appendChild(admin_tools_option_1);
+
+        var admin_tools_option_2 = document.createElement("div");
+        devices_button = document.createElement("button");
+        devices_button.classList.add("submenu_button");
+        devices_button.innerHTML = "<a href = '{% url "admintools:device_database" %}'>&nbsp;Device Database&nbsp;</a>";
+        admin_tools_option_2.appendChild(devices_button);
+        admin_tools_option_2.style.textAlign = "left";
+        admin_tools_menu_options.appendChild(admin_tools_option_2);
+
+        var admin_tools_option_3 = document.createElement("div");
+        com_str_button = document.createElement("button");
+        com_str_button.classList.add("submenu_button");
+        com_str_button.innerHTML = "<a href = '{% url "admintools:community_string" %}'>&nbsp;Community String&nbsp;</a>";
+        admin_tools_option_3.appendChild(com_str_button);
+        admin_tools_option_3.style.textAlign = "left";
+        admin_tools_menu_options.appendChild(admin_tools_option_3);
+
+        admin_tools_menu_options.style.visibility = "hidden";
+        admin_tools_menu_options.classList.add("tools_menu");
+
+        admin_tools_menu.appendChild(admin_tools_menu_options);
+        get_os_button.classList.add("header_button");
+        users_button.classList.add("header_button");
+        devices_button.classList.add("header_button");
+        com_str_button.classList.add("header_button");
+
+        hide_admin_tools_menu=function(){
+            admin_tools_menu_options.style.visibility = "hidden";
+        }
+        show_admin_tools_menu=function(){
+            admin_tools_menu_options.style.visibility = "visible";
+        }
+
+        main_menu.style.visibility="hidden";
+        main_menu.style.position="absolute";
+
+        show_main_menu = function(){
+            event.stopPropagation();
+            if(main_menu.style.visibility == "hidden"){
+                main_menu.style.visibility = "visible";
+                body.addEventListener("click", function(){
+                admin_tools_menu_options.style.visibility = "hidden";
+                tools_menu_options.style.visibility = "hidden";
+                main_menu.style.visibility = "hidden";
+                    }, false);
             }
             else{
-                menu_options.style.visibility = "visible";
+                main_menu.style.visibility = "hidden";
             }
-        }, false);
+        }
+
+        body = document.querySelector("html");
 
     </script>
-</h3>

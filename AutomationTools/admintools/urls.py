@@ -5,8 +5,9 @@ from django.views.generic import RedirectView
 app_name = 'admintools'
 
 urlpatterns = [
-    url(r'^$', views.index, name='home'),
-    url(r'^adduser/$', views.add_user, name='add_user'),
-    url(r'^newuser/$', views.new_user, name='new_user'),
-    url(r'^modifyuser$', views.modify_user, name='modify_user')
+    url(r'^users$', views.users, name='users'),
+    url(r'^new_user/$', views.new_user, name='new_user'),
+    url(r'^modify_user$', views.modify_user, name='modify_user'),
+    url(r'^community_string$', views.community_string, name='community_string'),
+    url(r'^device_database$', views.device_database, name='device_database')
 ]
