@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .getIPviaSNMP import findOS
-from .models import Community_String
+from .models import Community_String, Device_Database
 
 
 def get_os(request):
@@ -25,3 +25,17 @@ def find_os(request):
     }
 
     return render(request, 'tools/get_os.html', context)
+
+
+def locate_host(request):
+    device_list = []
+    for d in Device_Database.objects.all():
+        if d.device_type != "Access":
+            device_list.append(d)
+    context = {
+        'device_list': device_list,
+        'community_string': Community_String.objects.get().community_string,
+        'message': ""
+    }
+
+    return render(request, 'tools/locate_host.html', context)

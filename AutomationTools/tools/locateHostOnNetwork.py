@@ -92,7 +92,7 @@ class SnmpToAccessPort:
 
     """snmpwalk -c public@1 crumpy .1.3.6.1.2.1.17.4.3.1.1
 
-    function does little more than provide confirgamation that the
+    function does little more than provide confirmation that the
     mac address is present and to convert the mac to decimal
 
     17.4.3.1.1.0.0.12.7.172.8 =  Hex: 00 00 0C 07 AC 08
@@ -203,7 +203,7 @@ class SnmpToAccessPort:
                 return False
         else:
             return "not found"
-"""
+
 host = input("Host: ")
 mac_address = input("Mac Address: ")
 username = input("Username: ")
@@ -225,4 +225,3 @@ while is_trunk:
     interface = stap.get_interface(if_index)
     is_trunk = stap.is_interface_trunk(if_index)
     print (interface, is_trunk)
-"""

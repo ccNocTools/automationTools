@@ -140,6 +140,7 @@ def device_database(request):
         com_str = Community_String.objects.get().community_string
         device_name = request.POST["device_name"]
         ip_address = request.POST["ip_address"]
+        device_type = request.POST["device_type"]
         os_version = findOS(com_str, request.POST["ip_address"])
 
         for device in device_list:
@@ -152,6 +153,7 @@ def device_database(request):
         new_device.device_name = device_name
         new_device.ip_address = ip_address
         new_device.os_version = os_version
+        new_device.device_type = device_type
         new_device.save()
         context['message'] = "Device added successfully."
     except:

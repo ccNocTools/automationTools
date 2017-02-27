@@ -5,5 +5,6 @@ app_name = 'tools'
 
 urlpatterns = [
     url(r'^get_os/$', views.get_os, name='get_os'),
-    url(r'^find_os/$', views.find_os, name='find_os')
+    url(r'^find_os/$', views.find_os, name='find_os'),
+    url(r'^locate_host/$', views.locate_host, name='locate_host')
 ]

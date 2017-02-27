@@ -19,7 +19,7 @@ table{
 
 body{
     background: repeating-linear-gradient(
-        45deg,
+        90deg,
         mediumaquamarine,
         snow 100%
     );
@@ -52,7 +52,6 @@ a{
 
 #header_bar{
     z-index: 999;
-    width:50%;
     cursor: pointer;
 
 }

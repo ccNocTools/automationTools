@@ -19,19 +19,30 @@ def findOS(community_string, hostname):
                      ContextData(),
                      ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0)))
         target = str(next(get))
-        hex_value = re.search('(?<= hexValue=\')[A-Fa-f0-9]*', target)
-        try:
-            ascii_value = bytearray.fromhex(hex_value.group()).decode()
-            os = ascii_value[:9]
-            os_version = re.search('(?<= Version\s).*,', ascii_value).group(0).replace(',', '')
-            return (os + " " + os_version)
-        except:
-            return ("No OS found")
+        print(target)
+        if target[:11] == "Cisco NX-OS":
+            try:
+                os = target[:11]
+                print (os)
+                os_version = re.search('(?<= Version\s).*,', target).group(0).replace(',', '')
+                return (os + " " + os_version)
+            except:
+                return ("No OS found")
+        else:
+            hex_value = re.search('(?<= hexValue=\')[A-Fa-f0-9]*', target)
+            try:
+                print(hex_value)
+                ascii_value = bytearray.fromhex(hex_value.group()).decode()
+                print(ascii_value)
+                os = ascii_value[:9]
+                os_version = re.search('(?<= Version\s).*,', ascii_value).group(0).replace(',', '')
+                return (os + " " + os_version)
+            except:
+                return ("No OS found")
     except:
         return ("Unable to connect")
 
-"""
-findOS("CCsolarRo", "2.1.1.1")
-findOS("CCsolarRo", "10.0.0.1")
-findOS("CCsolarRo", "10.0.5.6")
-"""
+
+#findOS("CCsolarRo", "2.1.1.1")
+#findOS("CCsolarRo", "10.0.0.1")
+#findOS("CCsolarRo", "10.0.5.6")

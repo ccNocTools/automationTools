@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css"/>
 	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
     <h2><a onclick="return show_main_menu()">☰ Menu</a>
-<div id="header_bar">
+<span id="header_bar">
     <a href="/"><button class="header_button">Home</button></a>
     <a><button class="header_button" onmouseover="show_tools_menu()" onmouseout="hide_tools_menu()">
         <span id="tools_menu">Tools</span></button></a>
@@ -15,7 +15,7 @@
     {% endif %}
     <a href="/user_options"><button class="header_button">User Options</button></a>
     <a href="{% url 'home:logout' %}"><button class="header_button">Logout</button></a>
-</div></h2>
+</span></h2>
     <script>
         var tools_menu = document.querySelector("#tools_menu");
         var tools_menu_options = document.createElement("span");
@@ -27,9 +27,19 @@
         get_os_button.innerHTML = "<a href = '{% url "tools:get_os" %}'>&nbsp;Get OS&nbsp;</a>";
         tools_option_1.appendChild(get_os_button);
         tools_menu_options.appendChild(tools_option_1);
+
+        var tools_option_2 = document.createElement("div");
+        locate_host_button = document.createElement("button");
+        locate_host_button.classList.add("submenu_button");
+        locate_host_button.innerHTML = "<a href = '{% url "tools:locate_host" %}'>&nbsp;Locate Host&nbsp;</a>";
+        tools_option_2.appendChild(locate_host_button);
+        tools_menu_options.appendChild(tools_option_2);
+
         tools_menu_options.style.visibility = "hidden";
         tools_menu_options.classList.add("tools_menu");
         tools_menu.appendChild(tools_menu_options);
+
+
 
         hide_tools_menu=function(){
             tools_menu_options.style.visibility = "hidden";
@@ -71,6 +81,7 @@
 
         admin_tools_menu.appendChild(admin_tools_menu_options);
         get_os_button.classList.add("header_button");
+        locate_host_button.classList.add("header_button");
         users_button.classList.add("header_button");
         devices_button.classList.add("header_button");
         com_str_button.classList.add("header_button");

@@ -51,7 +51,7 @@ def initialize(request):
                     'message': "Admin user created successfully",
                     'is_admin': True
                 }
-                return render(request, "admintools/index.html", context)
+                return render(request, "/", context)
     context = {
         'message': user['message']
 

@@ -14,4 +14,5 @@ class Community_String(models.Model):
 class Device_Database(models.Model):
     device_name = models.CharField(max_length = 250, default='')
     ip_address = models.CharField(max_length = 250, default='')
+    device_type = models.CharField(max_length = 250, default='Core')
     os_version = models.CharField(max_length = 250, default='')

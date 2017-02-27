@@ -5,10 +5,11 @@
 <head>
     <meta charset="UTF-8">
     <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type = "text/css"/>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css"/>
 </head>
-<body onload="page_load()">
+<body onload="page_load()"><center>
     <h2>Login</h2>
     <form action="{% url 'home:login' %}" method="post">
         {% csrf_token %}
@@ -18,6 +19,7 @@
         <input type="password" id="password" name="password"/><br>
         <input type="submit" value="Login"/>
     </form>
+    </center>
     <script>
         function page_load() {
             if ("{{message}}" != ""){
