@@ -2,9 +2,9 @@ import subprocess
 import paramiko
 import socket
 import re
-from regX import CiscoNexusRegX, SNMPCiscoIOSRegX
-from sshCommands import CiscoNexusCommands
-from snmpCommands import CiscoIOSSNMP
+from .regX import CiscoNexusRegX, SNMPCiscoIOSRegX
+from .sshCommands import CiscoNexusCommands
+from .snmpCommands import CiscoIOSSNMP
 
 
 class FindDevice:
@@ -203,7 +203,7 @@ class SnmpToAccessPort:
                 return False
         else:
             return "not found"
-
+"""
 host = input("Host: ")
 mac_address = input("Mac Address: ")
 username = input("Username: ")
@@ -211,11 +211,12 @@ password = input("Password: ")
 snmp_version = input("SNMP Version: ")
 com_str = input("Community String: ")
 
-
 fd = FindDevice(host, mac_address, username, password)
-next_hop_host = fd.locate_vlan_for_mac_address()[0]
+fd_result = fd.locate_vlan_for_mac_address()
+next_hop_host = fd_result[0]
+print(next_hop_host)
 vlan = fd.locate_vlan_for_mac_address()[1]
-
+print(vlan)
 stap = SnmpToAccessPort(snmp_version, com_str, mac_address, vlan, next_hop_host)
 is_trunk = True
 
@@ -225,3 +226,4 @@ while is_trunk:
     interface = stap.get_interface(if_index)
     is_trunk = stap.is_interface_trunk(if_index)
     print (interface, is_trunk)
+"""

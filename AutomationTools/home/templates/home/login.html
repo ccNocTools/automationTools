@@ -9,25 +9,45 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type = "text/css"/>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css"/>
 </head>
-<body onload="page_load()"><center>
+<body onload="page_load()">
     <h2>Login</h2>
     <form action="{% url 'home:login' %}" method="post">
         {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="{{username}}"/><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password"/><br>
-        <input type="submit" value="Login"/>
+        <ul>
+            <li>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="{{username}}"/>
+            </li>
+            <li>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password"/><span id="password_monkey" onclick="show_password()">&#128584</span>
+            </li>
+            <li class="submit_button_li"><span class="submit_padding"></span>
+                <input type="submit" class="submit_button" value="Login"/>
+            </li>
+        </ul>
     </form>
-    </center>
     <script>
+        password_box = document.querySelector("#password");
+        password_monkey = document.querySelector("#password_monkey");
+        password_monkey.style.cursor = "pointer";
+
         function page_load() {
             if ("{{message}}" != ""){
             alert("{{message}}");
             }
         }
         history.pushState({}, null, '/');
-
+        function show_password(){
+            if (password_box.type == "password"){
+                password_box.type = "text";
+                password_monkey.innerHTML = "&#128053";
+            }
+            else{
+                password_box.type = "password";
+                password_monkey.innerHTML = "&#128584";
+            }
+        }
     </script>
 </body>
 </html>

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import auth
 from .usermod import User_Mod
+from tools.models import Community_String
 
 
 
@@ -140,6 +141,14 @@ def register(request):
         context['message'] = user['message']
         return render(request, "home/register.html", context)
     context['message'] = "User registered successfully. Login to continue."
+
+    try:
+        community_string = request.POST['community_string']
+        n = Community_String.objects.create()
+        n.community_string = community_string
+        n.save()
+    except:
+        pass
 
     return render(request, "home/login.html", context)
 
