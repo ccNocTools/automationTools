@@ -12,31 +12,35 @@ td{
 }
 
 table{
-    width: 100%;
+    max-width: 100%;
 	border: none;
 	opacity: .9;
 }
 
 body{
-    background: repeating-linear-gradient(
-        90deg,
-        mediumaquamarine,
-        snow 100%
-    );
+    background-image: url('/static/background.jpg');
     background-attachment: fixed;
 }
 
 .tools_menu{
     z-index: 999;
-    opacity: .9;
+    opacity: .95;
     position: absolute;
     left:100%;
-    width:100%;
+    width: 100%;
 }
 
 a{
-    text-decoration: none;
     cursor: pointer;
+    display: block;
+}
+button a{
+    color: cornflowerblue;
+
+}
+button a:hover{
+    text-decoration: none;
+    color: MintCream;
 }
 
 .invisible{
@@ -44,23 +48,37 @@ a{
 }
 
 .header_button{
+    text-align: left;
     background-color: MintCream;
-    border-radius: 5px;
+    border-radius: 2px;
+    border: 1px solid darkslategray;
     width: 100%;
     font-size: 25px;
+    padding: 4px;
+    color: cornflowerblue;
 }
+
+.header_button:hover, .tools_menu:hover{
+    background-color: cornflowerblue;
+    color: MintCream;
+}
+
 
 #header_bar{
     z-index: 999;
     cursor: pointer;
 }
 
+
 #main_menu{
+    display: inline-block;
+    color: cornflowerblue;
     z-index: 999;
 }
 
-a{
-    display: block;
+
+#main_menu a:hover{
+    text-decoration:none;
 }
 
 form ul{
@@ -82,8 +100,12 @@ form li input{
     display: inline-block;
 }
 
-form li .submit_button{
-}
+.submit_button, .edit_button{
+    background-color: azure;
+    border: 2px groove navy;
+    border-radius: 2px;
+    font-size: 20px;
+    }
 
 form .submit_padding{
     display:inline-block;

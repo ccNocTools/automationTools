@@ -53,27 +53,37 @@
         {% endif %}
     {% endfor %}
     </table><span id="user_options">
-    <input type="submit" name = "action" onclick="return confirm('Are you you want to delete selected users?')"
+    <input type="submit" class="submit_button" name = "action" onclick="return confirm('Are you you want to delete selected users?')"
            value="Delete Users"/>
-    <input type="submit" name = "action" onclick="return confirm('Are you sure you want to disable selected users?')"
+    <input type="submit" class="submit_button" name = "action" onclick="return confirm('Are you sure you want to disable selected users?')"
            value="Disable Users"/>
-    <input type="submit" name = "action" onclick="return confirm('Are you sure you want to enable selected users?')"
+    <input type="submit" class="submit_button" name = "action" onclick="return confirm('Are you sure you want to enable selected users?')"
            value="Enable Users"/>
-    <input type="submit" name = "action" onclick="return confirm('Are you sure you want to reset selected users?')"
+    <input type="submit" class="submit_button" name = "action" onclick="return confirm('Are you sure you want to reset selected users?')"
            value="Reset Users"/>
     </span>
 </form><br>
 
-    <button id="add_user_button">Add User</button><br>
+    <button id="add_user_button" class="submit_button">Add User</button><br>
 
         <form action="{% url 'admintools:new_user' %}" method="post" id="add_user_form">
         {% csrf_token %}
-            <label><b>Add User</b></label><br>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username"/><br>
-        <input type="checkbox" id="is_admin" name="is_admin"/>
-        <label for="is_admin">Administrator</label><br>
-        <input type="submit" value="Submit"/>
+            <ul>
+                <li>
+                    <h4><label><b>Add User</b></label></h4>
+                </li>
+                <li>
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username"/>
+                </li>
+                <li>
+                    <label for="is_admin">Administrator:</label>
+                    <input type="checkbox" class="submit_button" id="is_admin" name="is_admin"/>
+                </li>
+                <li class="submit_button_li"><span class="submit_padding"></span>
+                    <input type="submit" class="submit_button" value="Submit"/>
+                </li>
+            </ul>
     </form><br>
 
     <script>

@@ -11,21 +11,38 @@
 </head>
 <body onload="page_load()">
     <h2>Initial Setup</h2>
-    <h3>Please set up an administrator with username and password:</h3>
+    <h4>Please set up an administrator with username and password:</h4>
     <form action="{% url 'home:initialize' %}" method="post">
         {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="{{username}}" onKeyUp="check_values()"/><br>
-        <label for="email_address">Email Address:</label>
-        <input type="email" id="email_address" name="email_address" onKeyUp="check_values()"/><br>
-        <label for="password">New Password:</label>
-        <input type="password" id="password" name="password" onKeyUp="check_values()"/><br>
-        <label for="confirm_password">Confirm New Password:</label>
-        <input type="password" id="confirm_password" name="confirm_password" onKeyUp="check_values()"/>
-        <span id="password_test">Password must be 8 characters or longer.</span><br>
-        <label for="community_string">Community String (optional):</label>
-        <input type="text" id="community_string" name="community_string"/><br>
-        <input type="submit" id="submit" disabled=true value="Register"/>
+        <ul>
+            <li>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="{{username}}" onKeyUp="check_values()"/>
+            </li>
+            <li>
+                <label for="email_address">Email Address:</label>
+                <input type="email" id="email_address" name="email_address" onKeyUp="check_values()"/>
+            </li>
+            <li>
+                <label for="password">New Password:</label>
+                <input type="password" id="password" name="password" onKeyUp="check_values()"/>
+            </li>
+            <li>
+                <label for="confirm_password">Confirm New Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" onKeyUp="check_values()"/>
+            </li>
+            <li><span class="submit_padding"></span>
+                <span id="password_test">Password must be 8 characters or longer.</span>
+            </li>
+            <li>
+                <label for="community_string">Community String (optional):</label>
+                <input type="text" id="community_string" name="community_string"/>
+            </li>
+
+            <li class="submit_button_li"><span class="submit_padding"></span>
+                <input type="submit" class="submit_button" id="submit" disabled=true value="Register"/>
+            </li>
+        </ul>
     </form>
 
 

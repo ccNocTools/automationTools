@@ -3,7 +3,7 @@
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type = "text/css"/>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css"/>
 	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
-    <h2><a onclick="return show_main_menu()">☰ Menu</a>
+    <h2 id="main_menu"><a onclick="return show_main_menu()">☰ Menu</a>
 <span id="header_bar">
     <a href="/"><button class="header_button">Home</button></a>
     <a><button class="header_button" onmouseover="show_tools_menu()" onmouseout="hide_tools_menu()">
@@ -23,14 +23,14 @@
         var tools_option_1 = document.createElement("div");
         get_os_button = document.createElement("button");
         get_os_button.classList.add("submenu_button");
-        get_os_button.innerHTML = "<a href = '{% url "tools:get_os" %}'>&nbsp;Get OS&nbsp;</a>";
+        get_os_button.innerHTML = "<a href = '{% url "tools:get_os" %}'>Get OS</a>";
         tools_option_1.appendChild(get_os_button);
         tools_menu_options.appendChild(tools_option_1);
 
         var tools_option_2 = document.createElement("div");
         locate_host_button = document.createElement("button");
         locate_host_button.classList.add("submenu_button");
-        locate_host_button.innerHTML = "<a href = '{% url "tools:locate_host" %}'>&nbsp;Locate Host&nbsp;</a>";
+        locate_host_button.innerHTML = "<a href = '{% url "tools:locate_host" %}'>Locate Host</a>";
         tools_option_2.appendChild(locate_host_button);
         tools_menu_options.appendChild(tools_option_2);
 
@@ -62,7 +62,7 @@
         var admin_tools_option_2 = document.createElement("div");
         devices_button = document.createElement("button");
         devices_button.classList.add("submenu_button");
-        devices_button.innerHTML = "<a href = '{% url "admintools:device_database" %}'>&nbsp;Device Database&nbsp;</a>";
+        devices_button.innerHTML = "<a href = '{% url "admintools:device_database" %}'>Device Database</a>";
         admin_tools_option_2.appendChild(devices_button);
         admin_tools_option_2.style.textAlign = "left";
         admin_tools_menu_options.appendChild(admin_tools_option_2);
@@ -70,7 +70,7 @@
         var admin_tools_option_3 = document.createElement("div");
         com_str_button = document.createElement("button");
         com_str_button.classList.add("submenu_button");
-        com_str_button.innerHTML = "<a href = '{% url "admintools:community_string" %}'>&nbsp;Community String&nbsp;</a>";
+        com_str_button.innerHTML = "<a href = '{% url "admintools:community_string" %}'>Community String</a>";
         admin_tools_option_3.appendChild(com_str_button);
         admin_tools_option_3.style.textAlign = "left";
         admin_tools_menu_options.appendChild(admin_tools_option_3);

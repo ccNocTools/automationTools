@@ -9,13 +9,21 @@
 
     <form action="{% url 'tools:find_os' %}" method="post">
         {% csrf_token %}
-        <label for="ip_address">IP Address:</label>
-        <input id="ip_address" type="text" name="ip_address" value="{{ip_address}}"/><br>
-        <label for="community_string">Community String:</label>
-        <input id="community_string" type="text" name="community_string" value="{{community_string}}"/><br>
-        <input type="submit" value="Submit" onclick="show_working_indicator()"/><br>
-    </form><br>
-    <b>OS: </b><span id="os">{{os}}<img src = "{% static '01-progress.gif' %}" id = "working_indicator" width="10%"></span>
+        <ul>
+            <li>
+                <label for="ip_address">IP Address:</label>
+                <input id="ip_address" type="text" name="ip_address" value="{{ip_address}}"/>
+            </li>
+            <li>
+                <label for="community_string">Community String:</label>
+                <input id="community_string" type="text" name="community_string" value="{{community_string}}"/>
+            </li>
+            <li class="submit_button_li"><span class="submit_padding"></span>
+                <input type="submit" class="submit_button" value="Submit" onclick="show_working_indicator()"/>
+            </li>
+        </ul>
+    </form>
+    <ul><h3>OS: </h3><span id="os">{{os}}<img src = "{% static '01-progress.gif' %}" id = "working_indicator" width="10%"></span></ul>
     <script>
         working_indicator = document.querySelector("#working_indicator");
         function page_load() {
