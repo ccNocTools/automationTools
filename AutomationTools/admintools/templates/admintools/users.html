@@ -14,40 +14,40 @@
             <th>&nbsp;User Type&nbsp;</th></tr>
     {% for user in all_users %}
         {% if user.username == request.user.username %}
-        <tr class="row" style="color:green;"><td></td><td>{{user.username}}</td><td>{{user.email}}</td>
+        <tr class="row" style="color:#61AD36;"><td></td><td>{{user.username}}</td><td>{{user.email}}</td>
             <td align="center">✔</td><td align="center">✔</td><td>Admin</td></tr>
         {% endif %}
     {% endfor %}
     {% for user in all_users %}
         {% if user.username != request.user.username %}
-        <tr class="row"{% if user.is_active == False %}
-                style="color:red;"
-            {% endif %}
-            {% if user.email == '' %}
-                style="color:slategrey;"
-            {% endif %}
-            >
-            <td align="center">&nbsp;
-            <input type="checkbox" class="check_box" id="{{user.username}}" name="{{user.username}}">&nbsp;
-            </td>
-            <td>{{user.username}}</td>
-            <td>{{user.email}}</td>
-            <td align="center">
-                {% if user.is_active == True %}
-                ✔
+            <tr class="row"{% if user.is_active == False %}
+                    style="color:red;"
+        {% endif %}
+                {% if user.email == '' %}
+                    style="color:slategrey;"
                 {% endif %}
-            </td>
-            <td align="center">
-                {% if user.email != "" %}
-                ✔
-                {% endif %}
-            </td>
-            <td>
-            {% if user.is_superuser == True %}
-                Admin
-            {% else %}
-                Standard
-            {% endif %}
+                >
+                <td align="center">&nbsp;
+                    <input type="checkbox" class="check_box" id="{{user.username}}" name="{{user.username}}">&nbsp;
+                </td>
+                <td>{{user.username}}</td>
+                <td>{{user.email}}</td>
+                <td align="center">
+                    {% if user.is_active == True %}
+                    ✔
+                    {% endif %}
+                </td>
+                <td align="center">
+                    {% if user.email != "" %}
+                    ✔
+                    {% endif %}
+                </td>
+                <td>
+                    {% if user.is_superuser == True %}
+                        Admin
+                    {% else %}
+                        Standard
+                    {% endif %}
             </td>
         </tr>
         {% endif %}
@@ -87,43 +87,7 @@
     </form><br>
 
     <script>
-        add_user_form = document.querySelector("#add_user_form");
-        add_user_button = document.querySelector("#add_user_button");
-        user_options = document.querySelector("#user_options");
-        check_boxes = document.querySelectorAll(".check_box");
-
-        for (i = 0; i < check_boxes.length; ++i){
-            check_boxes[i].addEventListener("click", function(){
-                for (i = 0; i < check_boxes.length; ++i){
-                    if (check_boxes[i].checked){
-                    user_options.classList.remove("invisible");
-                    return;
-                    }
-                }
-                user_options.classList.add("invisible");
-            }, false);
-        }
-
-        function page_load() {
-            add_user_form.classList.add("invisible");
-            user_options.classList.add("invisible");
-            if ("{{message}}" != ""){
-            alert("{{message}}");
-            }
-        }
-        history.pushState({}, null, '/admintools/users');
-
-        add_user_button.addEventListener("click", function(){
-            if (this.innerHTML == 'Add User'){
-                add_user_form.classList.remove("invisible");
-                this.innerHTML = "Hide";
-                }
-            else{
-                add_user_form.classList.add("invisible");
-                this.innerHTML = "Add User";
-            }
-
-        }, false);
+        {% include 'admintools/users_script.js' %}
     </script>
 </body>
 </html>

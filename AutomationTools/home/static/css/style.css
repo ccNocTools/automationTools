@@ -34,14 +34,14 @@ a{
     cursor: pointer;
     display: block;
 }
-button a{
-    color: cornflowerblue;
+.tools_menu a{
+    color: royalblue;
+}
 
-}
-button a:hover{
+.tools_menu a:hover{
     text-decoration: none;
-    color: MintCream;
 }
+
 
 .invisible{
     visibility: hidden;
@@ -55,12 +55,11 @@ button a:hover{
     width: 100%;
     font-size: 25px;
     padding: 4px;
-    color: cornflowerblue;
+    color: royalblue;
 }
 
 .header_button:hover, .tools_menu:hover{
-    background-color: cornflowerblue;
-    color: MintCream;
+    background-color: #CCFF99;
 }
 
 
@@ -69,10 +68,9 @@ button a:hover{
     cursor: pointer;
 }
 
-
 #main_menu{
     display: inline-block;
-    color: cornflowerblue;
+    color: royalblue;
     z-index: 999;
 }
 

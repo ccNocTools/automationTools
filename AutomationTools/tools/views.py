@@ -41,13 +41,23 @@ def locate_host(request):
 
         next_hop_host = f.locate_vlan_for_mac_address()[0]
         vlan = f.locate_vlan_for_mac_address()[1]
-        test = vlan + " " + next_hop_host
+
+        d = SnmpToAccessPort("2c", community_string, mac_address, vlan, next_hop_host)
+
+        is_trunk = True
+
+        while is_trunk:
+            bridge_port = d.get_bridge_port()
+            if_index = d.get_ifindex(bridge_port)
+            interface = d.get_interface(if_index)
+            is_trunk = d.is_interface_trunk(if_index)
+        test = interface + "  " + if_index + " " + bridge_port
 
     except:
         pass
 
     device_list = []
-    for d in Device_Database.objects.all():
+    for d in Device_Database.objects.order_by('ip_address'):
         if d.device_type != "Access":
             device_list.append(d)
     context = {

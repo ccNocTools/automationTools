@@ -137,18 +137,23 @@ def device_database(request):
     device_list = Device_Database.objects.all()
 
     try:
-        com_str = Community_String.objects.get().community_string
+        try:
+            com_str = Community_String.objects.get().community_string
+        except:
+            context['message'] = "Please set Community String."
+            return render(request, "admintools/device_database.html", context)
         device_name = request.POST["device_name"]
         ip_address = request.POST["ip_address"]
         device_type = request.POST["device_type"]
         os_version = findOS(com_str, request.POST["ip_address"])
-
-        for device in device_list:
-            if ip_address == device.ip_address:
-                context['message'] = "Device already exists."
-                context['device_list'] = device_list
-                return render(request, "admintools/device_database.html", context)
-
+        try:
+            for device in device_list:
+                if ip_address == device.ip_address:
+                    context['message'] = "Device already exists."
+                    context['device_list'] = device_list
+                    return render(request, "admintools/device_database.html", context)
+        except:
+            pass
         new_device = Device_Database.objects.create()
         new_device.device_name = device_name
         new_device.ip_address = ip_address
@@ -169,6 +174,17 @@ def device_database(request):
     except:
         pass
 
+    try:
+        for device in device_list:
+            new_device_type = request.POST[device.ip_address + '_type_input_box']
+            if new_device_type != '':
+                edited_device = Device_Database.objects.get(ip_address=device.ip_address)
+                edited_device.device_type = new_device_type
+                edited_device.save()
+                context['message'] = "Settings changed successfully."
+    except:
+        pass
+
     for device in device_list:
         try:
             if bool(request.POST[device.ip_address+"_box"]):
@@ -176,7 +192,15 @@ def device_database(request):
             context['message'] = "Devices deleted successfully."
         except:
             pass
-    device_list = Device_Database.objects.all()
+    device_list = Device_Database.objects.order_by('ip_address')
     context['device_list'] = device_list
 
     return render(request, "admintools/device_database.html", context)
+
+
+def reset_all(request):
+    Community_String.objects.all().delete()
+    Device_Database.objects.all().delete()
+    User.objects.all().delete()
+
+    return redirect("/")

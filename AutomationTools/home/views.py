@@ -52,12 +52,23 @@ def initialize(request):
                     'message': "Admin user created successfully",
                     'is_admin': True
                 }
-                return render(request, "/", context)
+                try:
+                    community_string = request.POST['community_string']
+                    n = Community_String.objects.create()
+                    n.community_string = community_string
+                    n.save()
+                except:
+                    pass
+
+                auth.logout(request)
+                return render(request, 'home/login.html', context)
+
     context = {
         'message': user['message']
-
     }
-    return render(request, "home/setup.html", context)
+
+
+    return render(request, "home/initialize.html", context)
 
 
 def setup(request, username, email, message):
@@ -141,14 +152,6 @@ def register(request):
         context['message'] = user['message']
         return render(request, "home/register.html", context)
     context['message'] = "User registered successfully. Login to continue."
-
-    try:
-        community_string = request.POST['community_string']
-        n = Community_String.objects.create()
-        n.community_string = community_string
-        n.save()
-    except:
-        pass
 
     return render(request, "home/login.html", context)
 

@@ -217,7 +217,7 @@ next_hop_host = fd_result[0]
 print(next_hop_host)
 vlan = fd.locate_vlan_for_mac_address()[1]
 print(vlan)
-stap = SnmpToAccessPort(snmp_version, com_str, mac_address, vlan, next_hop_host)
+stap = SnmpToAccessPort("2c", com_str, mac_address, vlan, next_hop_host)
 is_trunk = True
 
 while is_trunk:
@@ -226,4 +226,5 @@ while is_trunk:
     interface = stap.get_interface(if_index)
     is_trunk = stap.is_interface_trunk(if_index)
     print (interface, is_trunk)
+
 """

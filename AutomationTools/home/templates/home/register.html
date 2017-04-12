@@ -10,11 +10,11 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css"/>
 </head>
 <body onload="page_load()">
-    <h2>Register New User</h2>
+    <h2>
+        Register New User
+    </h2>
     <form action="{% url 'home:register' %}" method="post">
         {% csrf_token %}
-        <label for="username">Username: {{username}}</label>
-        <input type="hidden" id="username" name="username" value="{{username}}"/>
 
         <ul>
             <li>
@@ -36,17 +36,11 @@
             <li><span class="submit_padding"></span>
                 <span id="password_test">Password must be 8 characters or longer.</span>
             </li>
-            <li>
-                <label for="community_string">Community String (optional):</label>
-                <input type="text" id="community_string" name="community_string"/>
-            </li>
-
             <li class="submit_button_li"><span class="submit_padding"></span>
                 <input type="submit" class="submit_button" id="submit" disabled=true value="Register"/>
             </li>
         </ul>
     </form>
-
 
     <script>
 
@@ -56,7 +50,7 @@
         var confirm_password = document.querySelector("#confirm_password");
         var submit_button = document.querySelector("#submit");
 
-        function check_password(){
+        function check_values(){
             if (password.value != confirm_password.value){
                 password_test.innerHTML = "Passwords do not match.";
                 submit_button.disabled = true;

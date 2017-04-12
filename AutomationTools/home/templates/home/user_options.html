@@ -7,14 +7,16 @@
 <body onload="page_load()">
 {% include "home/Header.html" %}
 
-
+    <br>
     <button id="change_password_button" class="submit_button">Change Password</button><br>
 
         <form action="{% url 'home:user_options' %}" method="post" id="change_password_form">
         {% csrf_token %}
             <ul>
                 <li>
-                    <label><h4><b>Change Password</b></h4></label>
+                    <label>
+                        <h4><b>Change Password</b></h4>
+                    </label>
                 </li>
                     <input type="hidden" id="user_name" name="user_name" value="{{request.user.username}}"/>
                 <li>
@@ -38,9 +40,7 @@
             </ul>
     </form>
 
-
     <script>
-
         change_password_form = document.querySelector("#change_password_form");
         change_password_button = document.querySelector("#change_password_button");
         new_password = document.querySelector("#new_password");
