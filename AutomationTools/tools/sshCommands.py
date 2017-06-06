@@ -24,3 +24,4 @@ class CiscoNexusCommands:
     """
     def neighbor_interface_detail(interface):
         return "show cdp neighbor interface {} detail".format(interface)
+

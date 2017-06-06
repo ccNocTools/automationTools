@@ -29,6 +29,8 @@ class FindDevice:
             self.client.connect(self.host, 22, self.username, self.password)
             stdin, stdout, stderr = self.client.exec_command(self.cisco_command.find_mac_address(
                                                              self.mac_address))
+            # print (stdout)
+
             if stdout:
                 for line in stdout.readlines():
                     interface = re.search(self.regx.filter_interface(), line)  # grab interface name
@@ -63,6 +65,8 @@ class FindDevice:
             return ''.join(["Bad credentials! failed to connect to ", self.host])
         except (paramiko.SSHException, socket.error) as socket_error:
             return socket_error, ''.join(["Port may be disable or host is down! ", self.host])
+        except:
+            return "ass"
         self.client.close()
 
 
@@ -203,6 +207,7 @@ class SnmpToAccessPort:
                 return False
         else:
             return "not found"
+
 """
 host = input("Host: ")
 mac_address = input("Mac Address: ")
@@ -226,5 +231,4 @@ while is_trunk:
     interface = stap.get_interface(if_index)
     is_trunk = stap.is_interface_trunk(if_index)
     print (interface, is_trunk)
-
 """

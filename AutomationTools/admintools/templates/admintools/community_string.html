@@ -10,20 +10,27 @@
     <h3>Change Community String</h3>
     Current Community String: {{community_string}}<br><br>
 
-    <form action="{% url 'admintools:community_string' %}" method="POST">
+    <form action="{% url 'admintools:community_string' %}" method="POST" id="com_str_form">
         {% csrf_token %}
         <label for="community_string">Community String:</label>
-        <input type="text" id="community_string" name="community_string">
-        <input type="submit" value="Submit" onclick="return confirm('Are you you want to modify the community string?')">
-
-
-
+        <input type="text" id="community_string" name="community_string" value="{{community_string}}">
+        <input type="button" value="Submit" id="submit_button"
+               onclick="return com_str_check()">
     </form>
 
-
-
-
     <script>
+        com_str_box = document.querySelector("#community_string");
+        submit_button = document.querySelector("#submit_button");
+        com_str_form = document.querySelector("#com_str_form");
+
+        com_str_check = function(){
+            if (com_str_box.value != "" && com_str_box.value != "{{community_string}}"){
+                if (confirm("Are you sure you want to modify the community string?")){
+                    com_str_form.submit();
+                }
+            }
+        }
+
         function page_load() {
             if ("{{message}}" != ""){
             alert("{{message}}");

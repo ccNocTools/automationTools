@@ -22,6 +22,7 @@ function page_load() {
     alert("{{message}}");
     }
 }
+
 history.pushState({}, null, '/admintools/users');
 
 add_user_button.addEventListener("click", function(){

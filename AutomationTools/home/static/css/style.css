@@ -20,6 +20,8 @@ table{
 body{
     background-image: url('/static/background.jpg');
     background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
 }
 
 .tools_menu{
@@ -58,8 +60,9 @@ a{
     color: royalblue;
 }
 
-.header_button:hover, .tools_menu:hover{
+.header_button:hover{
     background-color: #CCFF99;
+    cursor: pointer;
 }
 
 
@@ -72,8 +75,8 @@ a{
     display: inline-block;
     color: royalblue;
     z-index: 999;
-}
 
+}
 
 #main_menu a:hover{
     text-decoration:none;

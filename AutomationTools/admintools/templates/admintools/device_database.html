@@ -13,7 +13,7 @@
     <table>
         <tr class="row" id="title_row">
             <th class="invisible"></th><th>&nbsp;Device Name&nbsp;</th><th>&nbsp;IP Address&nbsp;</th>
-            <th>&nbsp;Device Type&nbsp;</th><th>&nbsp;OS Version&nbsp;</th><th class="invisible"></th></tr>
+            <th>&nbsp;Device Type&nbsp;</th><th>&nbsp;OS Version&nbsp;</th><th></th></tr>
     {% for device in device_list %}
         <tr class="row">
             <td>&nbsp;
@@ -29,7 +29,8 @@
             </td>
             <td>{{device.ip_address}}</td>
             <td>
-                <label for="{{device.ip_address}}_type_box" id="{{device.ip_address}}_type_box">{{device.device_type}}</label>
+                <label for="{{device.ip_address}}_type_box" id="{{device.ip_address}}_type_box">{{device.device_type}}
+                </label>
                 <input type="hidden" size="12" id="{{device.ip_address}}_type_input_box"
                        name="{{device.ip_address}}_type_input_box" />
             </td>
@@ -50,7 +51,7 @@
 
     </form><br>
 
-    <button id="add_device_button" class="submit_button">Add Device</button><br>
+    <button id="add_device_button_reveal" class="submit_button">Add Device</button><br>
 
         <form action="{% url 'admintools:device_database' %}" method="post" id="add_device_form" class="invisible">
         {% csrf_token %}
@@ -71,7 +72,7 @@
                     <input type="" id="device_type" name="device_type"/>
                 </li>
                 <li class="submit_button_li"><span class="submit_padding"></span>
-                    <input type="submit" class="submit_button" value="Submit"/>
+                    <input type="button" class="submit_button" id="add_device_button" value="Submit"/>
                 </li>
             </ul>
     </form>

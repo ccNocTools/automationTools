@@ -28,6 +28,7 @@
             <li>
                 <label for="password">New Password:</label>
                 <input type="password" id="password" name="password" onKeyUp="check_values()"/>
+                <span id="password_monkey" onclick="show_password()">&#128584</span>
             </li>
             <li>
                 <label for="confirm_password">Confirm New Password:</label>
@@ -43,25 +44,31 @@
     </form>
 
     <script>
-
         var email = document.querySelector("#email_address");
         var password_test = document.querySelector("#password_test");
         var password = document.querySelector("#password");
         var confirm_password = document.querySelector("#confirm_password");
         var submit_button = document.querySelector("#submit");
+        password_monkey.style.cursor = "pointer";
+        password_test.style.color = "red";
+
 
         function check_values(){
             if (password.value != confirm_password.value){
                 password_test.innerHTML = "Passwords do not match.";
                 submit_button.disabled = true;
+                password_test.style.color = "red";
             }
             else{
                 if (password.value.length < 8){
                     password_test.innerHTML = "Password must be 8 characters or longer.";
                     submit_button.disabled = true;
+                    password_test.style.color = "red";
+
                 }
                 else{
                     password_test.innerHTML = "✔";
+                    password_test.style.color = "green";
                     if (email.value == ""){
                         submit_button.disabled = true;
                     }
@@ -69,6 +76,19 @@
                         submit_button.disabled = false;
                     }
                 }
+            }
+        }
+
+        function show_password(){
+            if (password.type == "password"){
+                password.type = "text";
+                confirm_password.type = "text";
+                password_monkey.innerHTML = "&#128053";
+            }
+            else{
+                password.type = "password";
+                confirm_password.type = "password";
+                password_monkey.innerHTML = "&#128584";
             }
         }
 

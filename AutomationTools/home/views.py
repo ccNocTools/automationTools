@@ -67,7 +67,6 @@ def initialize(request):
         'message': user['message']
     }
 
-
     return render(request, "home/initialize.html", context)
 
 
